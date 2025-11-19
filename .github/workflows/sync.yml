@@ -24,7 +24,12 @@ jobs:
       - name: Merge upstream
         run: |
           git checkout master
-          git merge upstream/master --no-edit || echo "Merge conflict detected"
+          git merge upstream/master --no-edit
 
       - name: Push changes
-        run: git push origin main
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git push origin master
+          else
+            echo "No changes to push"
+          fi
